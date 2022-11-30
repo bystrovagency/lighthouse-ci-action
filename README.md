@@ -58,6 +58,9 @@ The `shopify/lighthouse-ci-action` accepts the following arguments:
 * `collection_handle` - (optional) Collection handle to run the product page Lighthouse run on. Defaults to the first collection.
 * `lhci_min_score_performance` - (optional, default: 0.6) Minimum performance score for a passed audit (must be between 0 and 1).
 * `lhci_min_score_accessibility` - (optional, default: 0.9) Minimum accessibility score for a passed audit
+* `lhci_upload_target` - (optional) The type of target to upload the data to. [choices: "lhci", "temporary-public-storage", "filesystem"] (default: "temporary-public-storage")
+* `lhci_server_url` - (optional) [lhci only] The base URL of the LHCI server where results will be saved.
+* `lhci_project_token` - (optional) [lhci only] The Lighthouse CI build token for the project.
 
 For the GitHub Status Checks on PR. One of the two arguments is required:
 

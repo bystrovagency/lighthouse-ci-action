@@ -26,6 +26,15 @@ inputs:
     description: 'The root folder for the theme files that will be uploaded (default: ".")'
     required: false
     default: '.'
+  lhci_upload_target:
+    description: 'The type of target to upload the data to. [choices: "lhci", "temporary-public-storage", "filesystem"] (default: "temporary-public-storage")'
+    required: false
+  lhci_server_url:
+    description: '[lhci only] The base URL of the LHCI server where results will be saved.'
+    required: false
+  lhci_project_token:
+    description: '[lhci only] The Lighthouse CI build token for the project.'
+    required: false
   lhci_github_app_token:
     description: 'Lighthouse CI GitHub app token'
     required: false

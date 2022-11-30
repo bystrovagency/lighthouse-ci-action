@@ -11,11 +11,14 @@
 #
 # Here, we're translating the GitHub action input arguments into environment variables
 # for this script to use.
-[[ -n "$INPUT_STORE" ]]             && export SHOP_STORE="$INPUT_STORE"
-[[ -n "$INPUT_PASSWORD" ]]          && export SHOP_PASSWORD="$INPUT_PASSWORD"
-[[ -n "$INPUT_PRODUCT_HANDLE" ]]    && export SHOP_PRODUCT_HANDLE="$INPUT_PRODUCT_HANDLE"
-[[ -n "$INPUT_COLLECTION_HANDLE" ]] && export SHOP_COLLECTION_HANDLE="$INPUT_COLLECTION_HANDLE"
-[[ -n "$INPUT_THEME_ROOT" ]]        && export THEME_ROOT="$INPUT_THEME_ROOT"
+[[ -n "$INPUT_STORE" ]]               && export SHOP_STORE="$INPUT_STORE"
+[[ -n "$INPUT_PASSWORD" ]]            && export SHOP_PASSWORD="$INPUT_PASSWORD"
+[[ -n "$INPUT_PRODUCT_HANDLE" ]]      && export SHOP_PRODUCT_HANDLE="$INPUT_PRODUCT_HANDLE"
+[[ -n "$INPUT_COLLECTION_HANDLE" ]]   && export SHOP_COLLECTION_HANDLE="$INPUT_COLLECTION_HANDLE"
+[[ -n "$INPUT_THEME_ROOT" ]]          && export THEME_ROOT="$INPUT_THEME_ROOT"
+[[ -n "$INPUT_LHCI_SERVER_URL" ]]     && export SERVER_URL="$INPUT_LHCI_SERVER_URL"
+[[ -n "$INPUT_LHCI_UPLOAD_TARGET" ]]  && export UPLOAD_TARGET="$INPUT_LHCI_UPLOAD_TARGET"
+[[ -n "$INPUT_LHCI_PROJECT_TOKEN" ]]  && export PROJECT_TOKEN="$INPUT_LHCI_PROJECT_TOKEN"
 
 # Authentication creds
 export SHOP_ACCESS_TOKEN="$INPUT_ACCESS_TOKEN"
@@ -184,6 +187,20 @@ else
   log "Using $collection_handle"
 fi
 
+if [[ -n "${UPLOAD_TARGET+x}" ]]; then
+  upload_target="$UPLOAD_TARGET"
+else
+  upload_target="temporary-public-storage"
+fi
+
+if [[ -n "${SERVER_URL+x}" ]]; then
+  server_base_url="$SERVER_URL"
+fi
+
+if [[ -n "${PROJECT_TOKEN+x}" ]]; then
+  project_token="$PROJECT_TOKEN"
+fi
+
 # Disable redirects + preview bar
 query_string="?preview_theme_id=${preview_id}&_fd=0&pb=0"
 min_score_performance="${LHCI_MIN_SCORE_PERFORMANCE:-0.6}"
@@ -204,7 +221,9 @@ ci:
         - "--disable-dev-shm-usage"
         - "--disable-gpu"
   upload:
-    target: temporary-public-storage
+    target: $upload_target
+    serverBaseUrl: $server_base_url
+    token: $project_token
   assert:
     assertions:
       "categories:performance":
